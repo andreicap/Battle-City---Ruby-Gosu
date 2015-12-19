@@ -1,4 +1,8 @@
+require_relative 'projectile.rb'
+
 class Player
+
+  attr_accessor :x, :y, :phi
   def initialize
     @image = Gosu::Image.new 'resources/images/tank_player1_up_c0_t1.png'
     @x = @y = @phi = 0.0
@@ -6,8 +10,8 @@ class Player
     @score = 0
   end
 
-  def spawn(x, y)
-    @x, @y = x, y
+  def spawn(x, y, phi)
+    @x, @y, @phi = x, y, phi
   end
 
   def left
