@@ -6,8 +6,9 @@ class Player
   def initialize
     @image = Gosu::Image.new 'resources/images/tank_player1_up_c0_t1.png'
     @x = @y = @phi = 0.0
-    @vel = 1
+    @vel = 2
     @score = 0
+    @state = 1
   end
 
   def spawn(x, y, phi)

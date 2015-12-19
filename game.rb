@@ -1,14 +1,15 @@
 require 'gosu'
 require_relative 'player.rb'
 require_relative 'projectile.rb'
+require_relative 'client.rb'
 
 class GameWindow < Gosu::Window
   attr_accessor :screen_x, :screen_y
   def initialize
     @players = []
     @projectiles = []
-    @screen_x = 600
-    @screen_y = 600
+    @screen_x = 1024
+    @screen_y = 1024
     super @screen_x, @screen_y
     self.caption = 'Battle City!'
 
@@ -22,30 +23,41 @@ class GameWindow < Gosu::Window
     @opponent.spawn(90, 90, 180)
     @players += [@player, @opponent]
     
+    @client = Client.new '10.40.42.99', 3000
+    @client.connect
+    @client.send_request "b`"
   end
 
-  def update 
-    @projectiles << Projectile.new(@opponent)
+  def update
+    # Thread.start(server.accept) do |client|
+      @projectiles << Projectile.new(@opponent)
 
-    if Gosu::button_down? Gosu::KbLeft
-      @player.left
-      @player.move_horizontal
-    elsif Gosu::button_down? Gosu::KbRight
-      @player.right
-      @player.move_horizontal
-    elsif Gosu::button_down? Gosu::KbUp
-      @player.up
-      @player.move_vertical
-    elsif Gosu::button_down? Gosu::KbDown
-      @player.down
-      @player.move_vertical
-    end
+      if Gosu::button_down? Gosu::KbLeft
+        @client.send_request "move left"
+        @player.left
+        @player.move_horizontal
+      elsif Gosu::button_down? Gosu::KbRight
+        @client.send_request "move right"
+        @player.right
+        @player.move_horizontal
+      elsif Gosu::button_down? Gosu::KbUp
+        @client.send_request "move up"
+        @player.up
+        @player.move_vertical
+      elsif Gosu::button_down? Gosu::KbDown
+        @client.send_request "move down"
+        @player.down
+        @player.move_vertical
+      end
 
-    if Gosu::button_down? Gosu::KbSpace
-      manage_proj
-    end
-    @projectiles.each(&:move)
-    check_collision
+      if Gosu::button_down? Gosu::KbSpace
+        @client.send_request "shot" + " #{@player.phi}" 
+        manage_proj
+      end
+      @projectiles.each(&:move)
+      check_collision
+    # puts @client.get_response
+
   end
 
   def draw
