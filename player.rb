@@ -1,6 +1,6 @@
 class Player
   def initialize
-    @image = Gosu::Image.new 'assets/player.png'
+    @image = Gosu::Image.new 'resources/images/tank_player1_up_c0_t1.png'
     @x = @y = @phi = 0.0
     @vel = 1
     @score = 0
@@ -36,9 +36,9 @@ class Player
 
   def move_vertical
     if @phi == 0
-      @y += @vel
-    else
       @y -= @vel
+    else
+      @y += @vel
     end
   end
 
