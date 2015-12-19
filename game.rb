@@ -73,7 +73,6 @@ class GameWindow < Gosu::Window
           @projectiles.delete(p)
           tank.spawn(rand(400), rand(400), 0)          
         end
-        puts p.hit
       end
     end
   end
