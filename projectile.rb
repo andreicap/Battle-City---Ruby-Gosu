@@ -6,8 +6,7 @@ class Projectile
     @phi = tank.phi
     @x = tank.x
     @y = tank.y
-
-    @vel = 3
+    @vel = 4
   end
 
   def draw
